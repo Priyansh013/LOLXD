@@ -54,6 +54,14 @@ void NodeAtk(Node *root,int k){
     }
 }
 
+void LevelOrder( Node *root){
+    int height = Height(root);
+    for(int i =0 ;i<height; i++){
+      NodeAtk(root,i);
+      cout << endl;
+    }
+}
+
 int ChildrenSum(Node *root){
     if(root != NULL){
         int sum =root->key;
@@ -78,35 +86,52 @@ int ChildrenSum(Node *root){
     }
 }
 
+
+int checkHeightBalanced(Node *root){
+    if(root != NULL){
+        int diff = abs(Height(root->left) - Height(root->right));
+        if(diff >1){return 0;}
+        else{
+            return 1 * checkHeightBalanced(root->left) * checkHeightBalanced(root->right);
+        }
+    }
+    else{
+        return 1;
+    }
+}
+
 int main(){
 
 Node *root = NULL;
 
-root = new Node(10);
-root->left = new Node(20);
-root->right = new Node(30);
-root->right->right = new Node(60);
-root->left->left = new Node(40);
-root->left->right = new Node(50);
-root->left->right->left = new Node(70);
-root->left->right->right = new Node(80);
-root->left->right->right->right = new Node(90);
-root->left->right->right->right->right = new Node(100);
-
-
-// root = new Node(100);
-// root->left = new Node(60);
-// root->right = new Node(40);
-// root->right->right = new Node(40);
-// root->left->left = new Node(20);
-// root->left->right = new Node(40);
-// root->left->right->left = new Node(40);
+// root = new Node(10);
+// root->left = new Node(20);
+// root->right = new Node(30);
+// root->right->right = new Node(60);
+// root->left->left = new Node(40);
+// root->left->right = new Node(50);
+// root->left->right->left = new Node(70);
 // root->left->right->right = new Node(80);
 // root->left->right->right->right = new Node(90);
 // root->left->right->right->right->right = new Node(100);
 
 
+root = new Node(10);
+root->left = new Node(60);
+root->right = new Node(40);
+root->right->right = new Node(80);
+root->left->left = new Node(20);
+root->right->left = new Node(210);
+root->left->left->left = new Node(876);
+//root->left->right = new Node(40);
+// root->right->right->left = new Node(50);
+// root->left->right->left = new Node(40);
+// root->left->right->right = new Node(80);
+// root->right->right->left->right = new Node(89);
+// root->left->right->right->right = new Node(90);
+// root->left->right->right->right->right = new Node(100);
 
-cout << ChildrenSum(root) << endl; 
+
+cout << checkHeightBalanced(root) << endl; 
 
 }
