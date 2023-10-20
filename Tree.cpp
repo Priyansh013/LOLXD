@@ -63,6 +63,51 @@ void LevelOrder( Node *root){
     }
 }
 
+int indd=0;
+int countt=0;
+void SpiralNodeAtk(Node *root,int k,int arr[]){
+   // cout << "indd  is " << indd << endl; 
+    if(root==NULL){return;}
+    if(k==0){arr[indd] = root->key;
+    // cout << "arr indd is " << arr[indd] << endl;
+     indd++;countt++;
+    
+    }
+    else{
+    SpiralNodeAtk(root->left,k-1 , arr);
+    SpiralNodeAtk(root->right,k-1 , arr);
+    }
+}
+
+void SpiralLevelOrder( Node *root){
+    int height = Height(root);
+    int val = true;
+    for(int i =0 ;i<height; i++){
+    //    cout << "lol" <<i<< endl;
+        indd=0;
+        countt=0;
+        int deg = pow(2,i);
+        int arr[deg];
+      SpiralNodeAtk(root,i,arr);
+
+    //  cout << "val is " << val << endl;
+      if(val ==1){
+        for(int i=0; i <countt;i++){
+            cout << arr[i] << " " ;
+        }
+        cout << endl;
+        val = 0;
+      }
+      else{
+        for(int i = countt-1; i>=0;i--){
+            cout << arr[i] << " ";
+        }
+        cout<< endl;
+        val =1;
+      }
+    }
+}
+
 int ChildrenSum(Node *root){
     if(root != NULL){
         int sum =root->key;
@@ -124,6 +169,31 @@ int checkHeightBalanced(Node *root){
     }
 }
 
+
+int preIndex = 0;
+Node *cTree( int in[] , int pre[] , int is, int ie){
+
+    if(is > ie) return NULL;
+
+    Node *root = new Node(pre[preIndex]);
+    preIndex++;
+
+    int inIndex;
+    for(int i = is ; i<=ie ; ++i){
+        if(in[i] == root->key){
+            inIndex = i;
+            break;
+        }
+    }
+
+    root->left = cTree(in,pre,is,inIndex-1);
+    root->right = cTree(in,pre,inIndex+1, ie);
+    return root;
+
+
+ }
+
+
 int main(){
 
 Node *root = NULL;
@@ -155,5 +225,9 @@ root->left->right->right->right->right = new Node(100);
 // root->left->right->right->right = new Node(90);
 // root->left->right->right->right->right = new Node(100);
 
-MaxmWidth(root);
+// LevelOrder(root);
+// cout <<endl;
+SpiralLevelOrder(root);
+
+
 }
