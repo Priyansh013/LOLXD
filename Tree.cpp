@@ -12,6 +12,7 @@ struct Node{
     }
 };
 
+
 void InOrder(Node *root){
     if(root!=NULL){
         InOrder(root->left);
@@ -45,7 +46,7 @@ int Height(Node *root){
 } 
 
 void NodeAtk(Node *root,int k){
-    if(root==NULL)return;
+    if(root==NULL){return;}
     
     if(k==0){cout<<root->key<<" ";}
     else{
@@ -87,6 +88,29 @@ int ChildrenSum(Node *root){
 }
 
 
+
+int NumberOfNodesAtk(Node *root,int k){
+
+    if(root==NULL){return 0;}
+    if(k<0){return 0;}
+    else{
+    if(k==0){ return 1;}
+    else{
+    return NumberOfNodesAtk(root->left,k-1) + NumberOfNodesAtk(root->right,k-1);
+    }}
+}
+
+
+void MaxmWidth(Node *root){
+    int height = Height(root);
+    int maxm = 0;
+    for(int i=0;i<height ; i++){
+        maxm = max(maxm, NumberOfNodesAtk(root,i));
+        }
+    cout << maxm << endl;
+
+}
+
 int checkHeightBalanced(Node *root){
     if(root != NULL){
         int diff = abs(Height(root->left) - Height(root->right));
@@ -104,25 +128,25 @@ int main(){
 
 Node *root = NULL;
 
-// root = new Node(10);
-// root->left = new Node(20);
-// root->right = new Node(30);
-// root->right->right = new Node(60);
-// root->left->left = new Node(40);
-// root->left->right = new Node(50);
-// root->left->right->left = new Node(70);
-// root->left->right->right = new Node(80);
-// root->left->right->right->right = new Node(90);
-// root->left->right->right->right->right = new Node(100);
-
-
 root = new Node(10);
-root->left = new Node(60);
-root->right = new Node(40);
-root->right->right = new Node(80);
-root->left->left = new Node(20);
-root->right->left = new Node(210);
-root->left->left->left = new Node(876);
+root->left = new Node(20);
+root->right = new Node(30);
+root->right->right = new Node(60);
+root->left->left = new Node(40);
+root->left->right = new Node(50);
+root->left->right->left = new Node(70);
+root->left->right->right = new Node(80);
+root->left->right->right->right = new Node(90);
+root->left->right->right->right->right = new Node(100);
+
+
+// root = new Node(10);
+// root->left = new Node(60);
+// root->right = new Node(40);
+// root->right->right = new Node(80);
+// root->left->left = new Node(20);
+// root->right->left = new Node(210);
+// root->left->left->left = new Node(876);
 //root->left->right = new Node(40);
 // root->right->right->left = new Node(50);
 // root->left->right->left = new Node(40);
@@ -131,7 +155,5 @@ root->left->left->left = new Node(876);
 // root->left->right->right->right = new Node(90);
 // root->left->right->right->right->right = new Node(100);
 
-
-cout << checkHeightBalanced(root) << endl; 
-
+MaxmWidth(root);
 }
