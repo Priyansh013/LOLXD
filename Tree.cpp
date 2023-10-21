@@ -169,9 +169,8 @@ int checkHeightBalanced(Node *root){
     }
 }
 
-
 int preIndex = 0;
-Node *cTree( int in[] , int pre[] , int is, int ie){
+Node *cTree( int in[],int pre[],int is,int ie){
 
     if(is > ie) return NULL;
 
@@ -184,6 +183,7 @@ Node *cTree( int in[] , int pre[] , int is, int ie){
             inIndex = i;
             break;
         }
+        
     }
 
     root->left = cTree(in,pre,is,inIndex-1);
@@ -192,6 +192,89 @@ Node *cTree( int in[] , int pre[] , int is, int ie){
 
 
  }
+ 
+int county =0;
+int Diamaeter(Node *root , int maxm){
+    if(root->left !=NULL and root->right!= NULL){
+    //cout << "key is " << root->key << endl;
+    //cout << "maxm is " << maxm << endl;
+  //  cout << "height left and right is " << Height(root->left) << " " << Height(root->right) << endl;
+    maxm = max(Height(root->left)+ Height(root->right)+1 , maxm);
+   // cout << "level1 maxm is " << maxm << endl;
+    maxm = max(Diamaeter(root->left,maxm),maxm);
+ //   cout << "level2 maxm is " << maxm << endl;
+    maxm = max(Diamaeter(root->right, maxm),maxm);
+  //  cout << "level3 maxm is " << maxm << endl;
+    return maxm;}
+    else{
+        return 0;
+    }
+}
+
+
+bool doesExist( Node *root, int N){
+    if(root == NULL){return 0;}
+
+    if(root->key == N) {return 1;}
+    else{
+       return doesExist(root->left, N) + doesExist(root->right,N);
+    }
+}
+
+Node *lca;
+Node *LCA(Node *root, int N1 , int N2){
+   if(doesExist(root,N1) * doesExist(root,N2)){
+        if(doesExist(root->left,N1)* doesExist(root->left,N2)){
+            lca = root->left;
+            LCA(root->left,N1,N2);
+        }
+        else if(doesExist(root->right,N1)* doesExist(root->right,N2)) {
+            lca = root->right;
+            LCA(root->right,N1,N2);
+        }
+
+
+   }
+   else{
+    return NULL;
+   }
+
+}
+
+
+int countNodes( Node *root ){
+    int count = 0;
+    int h = Height(root);
+    for( int i = 0; i < h-1 ; i++){
+        count = count + pow(2,i);
+    }
+    count = count + NumberOfNodesAtk(root , h-1);
+    return count;
+
+}
+
+
+void serialisation(Node * root , vector<int> *vec){
+if(root == NULL){ (*vec).push_back(-1);}
+else{
+    (*vec).push_back(root->key);
+    serialisation(root->left, vec);
+    serialisation(root->right,vec);
+}
+}
+
+
+// Node *deSerialise(vector<int> vec){
+//     Node * root;
+//     root->key = vec[0];
+//     int len = vec.size();
+//     Node **temp = &root;
+//     for(int i=0 ; i<len ; i = i+3){
+        
+//     }
+    
+// }
+
 
 
 int main(){
@@ -200,14 +283,15 @@ Node *root = NULL;
 
 root = new Node(10);
 root->left = new Node(20);
-root->right = new Node(30);
+root->right = new Node(30); 
+//root->right->left = new Node(35);
 root->right->right = new Node(60);
 root->left->left = new Node(40);
 root->left->right = new Node(50);
-root->left->right->left = new Node(70);
-root->left->right->right = new Node(80);
-root->left->right->right->right = new Node(90);
-root->left->right->right->right->right = new Node(100);
+//root->left->right->left = new Node(70);
+// root->left->right->right = new Node(80);
+// root->left->right->right->right = new Node(90);
+// root->left->right->right->right->right = new Node(100);
 
 
 // root = new Node(10);
@@ -225,9 +309,35 @@ root->left->right->right->right->right = new Node(100);
 // root->left->right->right->right = new Node(90);
 // root->left->right->right->right->right = new Node(100);
 
+
+
+
+// root = new Node(10);
+// root->left = new Node(20);
+// root->right = new Node(30);
+// //root->right->right = new Node(60);
+// root->left->left = new Node(40);
+// root->left->left->left = new Node(489);
+// root->left->left->left->left = new Node(489);
+// root->left->left->right = new Node(789);
+// root->left->right = new Node(50);
+// //root->left->right->left = new Node(70);
+// root->left->right->right = new Node(80);
+// root->left->right->right->right = new Node(90);
+// //root->left->right->right->right->right = new Node(100);
+
 // LevelOrder(root);
 // cout <<endl;
-SpiralLevelOrder(root);
+//SpiralLevelOrder(root);
+
+//LevelOrder(root);
 
 
+vector<int> vec;
+serialisation(root, &vec);
+for(auto ptr = vec.begin() ; ptr!= vec.end() ; ptr++){
+    cout << *ptr << " " ;
+}
+cout << endl;
+ 
 }
